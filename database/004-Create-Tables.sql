@@ -16,11 +16,13 @@ CREATE TABLE public.media (
 DROP TABLE IF EXISTS public.video;
 CREATE TABLE public.video (
     id SERIAL PRIMARY KEY REFERENCES public.media (id),
+	thumbnail bytea,
 	content bytea NOT NULL
 );
 
 DROP TABLE IF EXISTS public.image;
 CREATE TABLE public.image (
     id SERIAL PRIMARY KEY REFERENCES public.media (id),
+	thumbnail bytea,
 	content bytea NOT NULL
 );
