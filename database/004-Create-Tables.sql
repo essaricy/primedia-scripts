@@ -4,13 +4,30 @@ CREATE TABLE public.media (
     name varchar(128) NOT NULL,
     type character(1) CHECK (type in ('V', 'I')),
     quality varchar(2) CHECK (quality in ('LO', 'MD', 'HI', 'HD')),
-	size bigint default 0,
     rating smallint CHECK (rating in (1, 2, 3, 4, 5)),
     tags text,
     views smallint DEFAULT 0,
     likes smallint DEFAULT 0,
+	size bigint default 0,
 	upload_date timestamp default current_timestamp,
 	last_seen timestamp
+);
+
+/*
+ REQUESTED			Initialized progress
+ PROC_START		Processing content started
+ THUMB_DONE		Success - Generate Thumbnail
+ THUMB_FAIL		Failure - Generating Thumbnail failed
+ SAVE_DONE		Success - Saved content and thumbnail
+ SAVE_FAIL		Failure - content and thumbnail
+*/
+DROP TABLE IF EXISTS public.progress cascade;
+CREATE TABLE public.progress (
+    id varchar(32) PRIMARY KEY,
+	media_id NOT NULL REFERENCES public.media (id),
+	status varchar(16) NOT NULL,
+	start_time NOT NULL timestamp default current_timestamp,
+	end_time timestamp
 );
 
 DROP TABLE IF EXISTS public.video;
