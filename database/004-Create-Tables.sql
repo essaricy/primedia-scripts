@@ -3,8 +3,8 @@ CREATE TABLE public.media (
     id SERIAL PRIMARY KEY,
     name varchar(128) NOT NULL,
     type character(1) CHECK (type in ('V', 'I')),
-    quality varchar(2) CHECK (quality in ('LO', 'MD', 'HI', 'HD')),
-    rating smallint CHECK (rating in (1, 2, 3, 4, 5)),
+    quality smallint,
+    rating smallint,
     tags text,
     views smallint DEFAULT 0,
     likes smallint DEFAULT 0,
@@ -23,10 +23,10 @@ CREATE TABLE public.media (
 */
 DROP TABLE IF EXISTS public.progress cascade;
 CREATE TABLE public.progress (
-    id varchar(32) PRIMARY KEY,
-	media_id NOT NULL REFERENCES public.media (id),
+    id varchar(36) PRIMARY KEY,
+	media_id bigint NOT NULL REFERENCES public.media (id),
 	status varchar(16) NOT NULL,
-	start_time NOT NULL timestamp default current_timestamp,
+	start_time timestamp NOT NULL default current_timestamp,
 	end_time timestamp
 );
 
