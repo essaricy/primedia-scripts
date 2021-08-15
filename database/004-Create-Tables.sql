@@ -9,6 +9,7 @@ CREATE TABLE public.media (
     views smallint DEFAULT 0,
     likes smallint DEFAULT 0,
 	size bigint default 0,
+	duration varchar(8),
 	upload_date timestamp default current_timestamp,
 	last_seen timestamp
 );
