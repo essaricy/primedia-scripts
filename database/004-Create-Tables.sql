@@ -14,23 +14,6 @@ CREATE TABLE public.media (
 	last_seen timestamp
 );
 
-/*
- REQUESTED			Initialized progress
- PROC_START		Processing content started
- THUMB_DONE		Success - Generate Thumbnail
- THUMB_FAIL		Failure - Generating Thumbnail failed
- SAVE_DONE		Success - Saved content and thumbnail
- SAVE_FAIL		Failure - content and thumbnail
-*/
-DROP TABLE IF EXISTS public.progress cascade;
-CREATE TABLE public.progress (
-    id varchar(36) PRIMARY KEY,
-	media_id bigint NOT NULL REFERENCES public.media (id),
-	status varchar(16) NOT NULL,
-	start_time timestamp NOT NULL default current_timestamp,
-	end_time timestamp
-);
-
 DROP TABLE IF EXISTS public.video;
 CREATE TABLE public.video (
     id SERIAL PRIMARY KEY REFERENCES public.media (id),
@@ -43,4 +26,34 @@ CREATE TABLE public.image (
     id SERIAL PRIMARY KEY REFERENCES public.media (id),
 	thumbnail bytea,
 	content bytea NOT NULL
+);
+
+/*
+ REQUESTED			Initialized progress
+ PROC_START		Processing content started
+ THUMB_DONE		Success - Generate Thumbnail
+ THUMB_FAIL		Failure - Generating Thumbnail failed
+ SAVE_DONE		Success - Saved content and thumbnail
+ SAVE_FAIL		Failure - content and thumbnail
+*/
+DROP TABLE IF EXISTS public.upload_progress cascade;
+CREATE TABLE public.upload_progress (
+    id varchar(36) PRIMARY KEY,
+	media_id bigint NOT NULL,
+	status varchar(16) NOT NULL,
+	start_time timestamp NOT NULL default current_timestamp,
+	end_time timestamp,
+	error_message text
+);
+
+DROP TABLE IF EXISTS public.activity_progress cascade;
+CREATE TABLE public.activity_progress (
+    id varchar(36) PRIMARY KEY,
+	activity varchar(36) NOT NULL,
+	total smallint default 0,
+	success smallint default 0,
+	failed smallint default 0,
+	skipped smallint default 0,
+	start_time timestamp NOT NULL default current_timestamp,
+	end_time timestamp
 );
