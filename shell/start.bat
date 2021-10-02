@@ -19,7 +19,7 @@ FOR /F "tokens=4 delims= " %%i in ('route print ^| find " 0.0.0.0"') do set IP_A
 echo IP Address of the machine is %IP_ADDRESS%
 
 :: Start the API
-::mvn install -DskipTests
+::mvn -f %API_DIR%\pom.xml clean install -DskipTests
 echo Starting API with a window title "%API_PROCESS_NAME%"
 start "%API_PROCESS_NAME%" /D %API_DIR% java -jar target\primedia-api-1.0.jar --server.port=%API_PORT% --spring.datasource.url=%DATASOURCE%
 for /F "tokens=2" %%a in ('tasklist /NH /FI "WindowTitle eq %API_PROCESS_NAME%"') do set API_PID=%%a
